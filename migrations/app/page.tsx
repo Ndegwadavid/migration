@@ -1,6 +1,4 @@
 "use client"
-
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import {
   FaRobot,
@@ -18,37 +16,6 @@ import {
 } from "react-icons/fa"
 
 export default function Home() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 12, minutes: 0, seconds: 0 })
-  const [progress, setProgress] = useState(0)
-
-  useEffect(() => {
-    const totalSeconds = 12 * 60 * 60 // Move inside useEffect
-    const targetTime = new Date().getTime() + totalSeconds * 1000
-    const interval = setInterval(() => {
-      const now = new Date().getTime()
-      const distance = targetTime - now
-
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000)
-
-      setTimeLeft({ hours, minutes, seconds })
-
-      // Calculate progress percentage (0% to 100%)
-      const elapsed = totalSeconds - distance / 1000
-      const progressPercent = Math.min(100, Math.max(0, (elapsed / totalSeconds) * 100))
-      setProgress(progressPercent)
-
-      if (distance < 0) {
-        clearInterval(interval)
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 })
-        setProgress(100)
-      }
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   const features = [
     {
       icon: <FaRobot className="text-4xl text-cyan-400" />,
@@ -158,50 +125,22 @@ export default function Home() {
             </motion.p>
           </motion.div>
 
-          {/* Enhanced Timer Section */}
+          {/* Simple Status Indicator */}
           <motion.div
             className="mb-16"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Migration Countdown</h2>
-              <p className="text-slate-400">Upgrading to the most advanced trading platform</p>
-            </div>
-
-            <div className="timer-grid">
-              <div className="timer-card">
-                <div className="timer-number">{timeLeft.hours.toString().padStart(2, "0")}</div>
-                <div className="timer-label">Hours</div>
+            <div className="status-container">
+              <div className="status-dot">
+                <div className="status-dot-pulse"></div>
               </div>
-              <div className="timer-separator">:</div>
-              <div className="timer-card">
-                <div className="timer-number">{timeLeft.minutes.toString().padStart(2, "0")}</div>
-                <div className="timer-label">Minutes</div>
-              </div>
-              <div className="timer-separator">:</div>
-              <div className="timer-card">
-                <div className="timer-number">{timeLeft.seconds.toString().padStart(2, "0")}</div>
-                <div className="timer-label">Seconds</div>
+              <div className="status-text">
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Migration in Progress</h2>
+                <p className="text-xl text-slate-400 mt-2">System upgrade active</p>
               </div>
             </div>
-
-            {/* Enhanced Progress Bar */}
-            <motion.div
-              className="progress-container-enhanced mt-8"
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "100%" }}
-              transition={{ duration: 1, delay: 1 }}
-            >
-              <motion.div
-                className="progress-fill-enhanced"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 1 }}
-              />
-              <div className="progress-text">{Math.round(progress)}% Complete</div>
-            </motion.div>
           </motion.div>
 
           {/* Stats Section */}
