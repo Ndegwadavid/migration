@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import {
   FaRobot,
   FaWallet,
@@ -19,12 +19,10 @@ import {
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({ hours: 12, minutes: 0, seconds: 0 })
-  const totalSeconds = 12 * 60 * 60
-  const [progress, setProgress] = useState(100)
-  const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    const totalSeconds = 12 * 60 * 60 // Move inside useEffect
     const targetTime = new Date().getTime() + totalSeconds * 1000
     const interval = setInterval(() => {
       const now = new Date().getTime()
@@ -44,7 +42,7 @@ export default function Home() {
       if (distance < 0) {
         clearInterval(interval)
         setTimeLeft({ hours: 0, minutes: 0, seconds: 0 })
-        setProgress(0)
+        setProgress(100)
       }
     }, 1000)
 
